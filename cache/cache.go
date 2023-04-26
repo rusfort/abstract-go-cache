@@ -4,13 +4,12 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"time"
 )
 
 // ICache implements any of your local cache or Memcache.
 type ICache interface {
 	Put(ctx context.Context, key string, val interface{}) error
-	Get(ctx context.Context, key string) interface{}
+	Get(ctx context.Context, key string) ([]byte, error)
 	Delete(ctx context.Context, key string) error
 }
 
@@ -21,7 +20,7 @@ type AbstractCache struct {
 
 // NewAbstractCache constructs new AbstractCache based on your cache core
 func NewAbstractCache(core ICache) *AbstractCache {
-	return AbstractCache{core: core}
+	return &AbstractCache{core: core}
 }
 
 // AbstractProc is any of your procedures or rpc calls wrapped in an abstract function
@@ -57,7 +56,7 @@ func (c *AbstractCache) GetFromCache(
 			return nil, fmt.Errorf("error on marshal: %w", err)
 		}
 
-		_ = c.core.Put(setCtx, key, got)
+		_ = c.core.Put(ctx, key, got)
 	}
 
 	return data, nil
