@@ -7,22 +7,27 @@ import (
 	"time"
 )
 
+// ICache implements any of your local cache or Memcache.
 type ICache interface {
 	Put(ctx context.Context, key string, val interface{}) error
 	Get(ctx context.Context, key string) interface{}
 	Delete(ctx context.Context, key string) error
 }
 
+// AbstractCache is an abstraction for your cache
 type AbstractCache struct {
 	core ICache
 }
 
+// NewAbstractCache constructs new AbstractCache based on your cache core
 func NewAbstractCache(core ICache) *AbstractCache {
 	return AbstractCache{core: core}
 }
 
+// AbstractProc is any of your procedures or rpc calls wrapped in an abstract function
 type AbstractProc func(ctx context.Context, params ...interface{}) (interface{}, error)
 
+// GetFromCache gets data from your cache if it exist (and didn't expire) and calls your proc if not (and then saves the result in your cache)
 func (c *AbstractCache) GetFromCache(
 	ctx context.Context,
 	keyPrefix string,
