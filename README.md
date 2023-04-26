@@ -1,5 +1,5 @@
-## abstract-go-cache
-# Lib for abstract cache. No more code duplicating.
+# abstract-go-cache
+## Abstract cache lib for any type of cache. No more code duplicating.
 
 Usage example:
 
@@ -61,7 +61,7 @@ How to install:
 
 type `go get -v github.com/rusfort/abstract-go-cache` in your terminal
 
-# Full main.go file - try this out!
+## Full main.go file - try this out!
 
 ```go
 package main
